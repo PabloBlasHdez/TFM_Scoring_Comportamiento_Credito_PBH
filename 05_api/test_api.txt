@@ -1,0 +1,35 @@
+# Ejemplos de llamadas a la API (una vez arrancada con uvicorn main:app)
+#
+# Si se ha definido API_KEY al arrancar, anade a cada llamada (salvo /health):
+#     -H "X-API-Key: tu_clave"
+
+# 1. Comprobar que el servicio esta vivo (siempre abierto)
+curl http://localhost:8000/health
+
+# 2. Info del modelo, parametros IFRS 9 y estado de la autenticacion
+curl http://localhost:8000/info
+
+# 3. Scoring de una tarjeta al corriente (Stage 1: ECL a 12 meses)
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"LIMIT_BAL":120000,"AGE":34,"PAY_1":0,"PAY_2":0,"PAY_3":0,"PAY_4":0,"PAY_5":0,"PAY_6":0,"BILL_AMT1":3200,"BILL_AMT2":2800,"BILL_AMT3":2500,"BILL_AMT4":2100,"BILL_AMT5":1800,"BILL_AMT6":1500,"PAY_AMT1":3000,"PAY_AMT2":2800,"PAY_AMT3":2400,"PAY_AMT4":2000,"PAY_AMT5":1800,"PAY_AMT6":1500,"EDUCATION":2,"MARRIAGE":1}'
+
+# 4. Tarjeta con dos meses de retraso (Stage 2: ECL a toda la vida)
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"LIMIT_BAL":20000,"AGE":24,"PAY_1":2,"PAY_2":2,"PAY_3":2,"PAY_4":2,"PAY_5":2,"PAY_6":2,"BILL_AMT1":18000,"BILL_AMT2":17500,"BILL_AMT3":17000,"BILL_AMT4":16500,"BILL_AMT5":16000,"BILL_AMT6":15500,"PAY_AMT1":0,"PAY_AMT2":500,"EDUCATION":3,"MARRIAGE":2}'
+
+# 5. Tarjeta en default, 90+ dias (Stage 3: PD = 1)
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{"LIMIT_BAL":50000,"AGE":41,"PAY_1":3,"PAY_2":2,"PAY_3":2,"PAY_4":0,"PAY_5":0,"PAY_6":0,"BILL_AMT1":48000,"EDUCATION":2,"MARRIAGE":1}'
+
+# 6. Casos limite: menor de edad (rechazo de negocio) y EDUCATION fuera de rango (422)
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" \
+  -d '{"LIMIT_BAL":50000,"AGE":16,"PAY_1":0,"PAY_2":0,"PAY_3":0,"PAY_4":0,"PAY_5":0,"PAY_6":0,"BILL_AMT1":1000}'
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" \
+  -d '{"LIMIT_BAL":50000,"AGE":30,"PAY_1":0,"PAY_2":0,"PAY_3":0,"PAY_4":0,"PAY_5":0,"PAY_6":0,"BILL_AMT1":1000,"EDUCATION":7}'
+
+# 7. Con autenticacion activada: sin clave debe devolver 401
+curl -X POST http://localhost:8000/predict -H "Content-Type: application/json" \
+  -d '{"LIMIT_BAL":50000,"AGE":30,"PAY_1":0,"PAY_2":0,"PAY_3":0,"PAY_4":0,"PAY_5":0,"PAY_6":0,"BILL_AMT1":1000}'

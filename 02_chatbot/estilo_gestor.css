@@ -1,0 +1,329 @@
+/* ══════════════════════════════════════════════════════════════════
+   estilo_gestor.css — Asistente de cartera · área de riesgos
+
+   Criterio de diseño: herramienta interna de uso diario, no escaparate.
+   Densidad alta, jerarquía por peso y no por color, y cifras alineadas
+   verticalmente. El color se reserva para una sola cosa: el stage IFRS 9.
+   Todo lo demás es tinta sobre papel técnico.
+
+   Paleta
+     --tinta      #16202B   texto y cabeceras
+     --papel      #F7F8F9   fondo de trabajo
+     --rejilla    #DDE2E6   bordes y separadores
+     --apunte     #5B6B7A   texto secundario y etiquetas
+     --stage3     #8C2F39   deterioro ya producido
+     --stage2     #A86B1F   aumento significativo del riesgo
+     --stage1     #2E5C4A   seguimiento normal
+   ══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+:root {
+  --tinta:   #16202B;
+  --papel:   #F7F8F9;
+  --rejilla: #DDE2E6;
+  --apunte:  #5B6B7A;
+  --stage3:  #8C2F39;
+  --stage2:  #A86B1F;
+  --stage1:  #2E5C4A;
+}
+
+/* ---------- Base ---------- */
+.stApp {
+  background: var(--papel);
+  color: var(--tinta);
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+  font-size: 0.93rem;
+}
+
+.block-container {
+  padding-top: 2.2rem;
+  max-width: 1180px;
+}
+
+/* Cifras financieras: ancho fijo para que las columnas cuadren al ojo.
+   Es el detalle que más distingue una herramienta de riesgos de una web. */
+table, code, .stDataFrame, [data-testid="stMetricValue"] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* ---------- Cabecera ---------- */
+h1 {
+  font-size: 1.32rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.01em;
+  padding-bottom: 0.7rem;
+  border-bottom: 2px solid var(--tinta);
+  margin-bottom: 0.3rem !important;
+}
+
+h2 { font-size: 1.05rem !important; font-weight: 600 !important; }
+h3 { font-size: 0.95rem !important; font-weight: 600 !important; }
+
+/* ---------- Barra lateral: panel de contexto, no de tecnologías ---------- */
+[data-testid="stSidebar"] {
+  background: #ECEFF1;
+  border-right: 1px solid var(--rejilla);
+}
+
+[data-testid="stSidebar"] .block-container { padding-top: 1.4rem; }
+
+[data-testid="stSidebar"] h3 {
+  font-size: 0.72rem !important;
+  font-weight: 600 !important;
+  color: var(--apunte);
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--rejilla);
+  padding-bottom: 0.4rem;
+}
+
+/* Las notas de pie de la barra lateral son parámetros vigentes del modelo:
+   se leen como una ficha, con mono para los valores. */
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--apunte);
+  line-height: 1.7;
+}
+
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] strong {
+  color: var(--tinta);
+  font-weight: 500;
+}
+
+/* ---------- Tablas de cartera ---------- */
+.stMarkdown table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.84rem;
+  margin: 0.7rem 0;
+}
+
+.stMarkdown thead th {
+  background: transparent;
+  color: var(--apunte);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-align: left;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1.5px solid var(--tinta);
+  white-space: nowrap;
+}
+
+.stMarkdown tbody td {
+  padding: 0.38rem 0.6rem;
+  border-bottom: 1px solid var(--rejilla);
+}
+
+/* Importes y probabilidades a la derecha: se comparan de arriba abajo. */
+.stMarkdown tbody td:nth-child(n+3) { text-align: right; }
+
+.stMarkdown tbody tr:hover { background: #F0F3F5; }
+
+/* ---------- Métricas ---------- */
+[data-testid="stMetric"] {
+  background: #FFFFFF;
+  border: 1px solid var(--rejilla);
+  border-top: 2px solid var(--tinta);
+  border-radius: 0;
+  padding: 0.75rem 0.9rem;
+}
+
+[data-testid="stMetricLabel"] {
+  font-size: 0.7rem !important;
+  color: var(--apunte) !important;
+  letter-spacing: 0.04em;
+}
+
+[data-testid="stMetricValue"] {
+  font-size: 1.4rem !important;
+  font-weight: 600 !important;
+  color: var(--tinta) !important;
+}
+
+/* ---------- Señalización de stage ----------
+   Único uso de color en la interfaz. Se aplica con <span class="stage-N">
+   desde el texto que redacta el agente o desde las fichas de cliente. */
+.stage-1, .stage-2, .stage-3 {
+  font-family: 'IBM Plex Mono', monospace;
+  font-size: 0.74rem;
+  font-weight: 500;
+  padding: 0.1rem 0.45rem;
+  border-radius: 2px;
+  border: 1px solid currentColor;
+}
+.stage-1 { color: var(--stage1); }
+.stage-2 { color: var(--stage2); }
+.stage-3 { color: var(--stage3); }
+
+/* ---------- Botones de pregunta sugerida ---------- */
+.stButton > button {
+  background: #FFFFFF;
+  color: var(--tinta);
+  border: 1px solid var(--rejilla);
+  border-radius: 2px;
+  font-size: 0.82rem;
+  font-weight: 400;
+  text-align: left;
+  padding: 0.5rem 0.8rem;
+  transition: border-color 120ms ease;
+}
+
+.stButton > button:hover {
+  border-color: var(--tinta);
+  background: #FFFFFF;
+  color: var(--tinta);
+}
+
+.stButton > button:focus-visible {
+  outline: 2px solid var(--tinta);
+  outline-offset: 1px;
+}
+
+/* ---------- Limpieza de cromo de Streamlit ---------- */
+#MainMenu, footer, [data-testid="stDecoration"] { visibility: hidden; }
+[data-testid="stHeader"] { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONVERSACIÓN ALINEADA
+   Quien pregunta a la IZQUIERDA, el asistente a la DERECHA. Streamlit
+   apila los mensajes a ancho completo: se recorta el ancho y se empuja
+   con margen automático al lado que corresponde.
+   ══════════════════════════════════════════════════════════════════ */
+[data-testid="stChatMessage"] {
+  width: fit-content;
+  max-width: 76%%;
+  margin-bottom: 0.6rem;
+}
+
+/* Quien pregunta: filo de acento y esquina inferior izquierda marcada. */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+  margin-right: auto;
+  border-radius: 12px 12px 12px 2px;
+  border-left: 3px solid #16202B;
+  background: #FFFFFF;
+}
+
+/* Asistente: a la derecha, con el avatar al otro lado del bloque. */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+  margin-left: auto;
+  flex-direction: row-reverse;
+  border-radius: 12px 12px 2px 12px;
+  border-right: 3px solid #2E5C4A;
+  border-left: 1px solid #DDE2E6;
+  background: #FDFDFE;
+}
+
+/* Un mensaje con tabla necesita todo el ancho: comprimir las columnas
+   de importes las hace ilegibles. */
+[data-testid="stChatMessage"]:has(table) { max-width: 100%; width: 100%; }
+
+/* Avatares de persona y asistente.
+   El icono de Streamlit viene en blanco, asi que en lugar de forzar su
+   color se pinta el circulo: el glifo blanco contrasta sobre el relleno
+   y la solucion no depende de que el selector del svg acierte. */
+[data-testid="stChatMessageAvatarUser"],
+[data-testid="stChatMessageAvatarAssistant"] {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border: none !important;
+}
+
+[data-testid="stChatMessageAvatarUser"] {
+  background: #16202B !important;
+}
+
+[data-testid="stChatMessageAvatarAssistant"] {
+  background: #2E5C4A !important;
+}
+
+/* Por si alguna version pinta el glifo oscuro, se fuerza a blanco. */
+[data-testid="stChatMessageAvatarUser"] svg,
+[data-testid="stChatMessageAvatarUser"] svg path,
+[data-testid="stChatMessageAvatarAssistant"] svg,
+[data-testid="stChatMessageAvatarAssistant"] svg path {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CAMPOS DE ENTRADA
+   Sobre fondo claro lo natural es tinta oscura. Se anula el fondo de
+   todo lo que hay dentro del campo y se pinta solo el envoltorio, que
+   es lo que funciona con independencia de la version de Streamlit.
+   ══════════════════════════════════════════════════════════════════ */
+[data-testid="stChatInput"],
+[data-testid="stChatInput"] *,
+[data-testid="stSidebar"] [data-baseweb="input"],
+[data-testid="stSidebar"] [data-baseweb="input"] *,
+[data-testid="stSidebar"] [data-baseweb="base-input"],
+[data-testid="stSidebar"] [data-baseweb="base-input"] *,
+[data-testid="stSidebar"] [data-baseweb="select"],
+[data-testid="stSidebar"] [data-baseweb="select"] * {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+[data-testid="stChatInput"] > div,
+[data-testid="stSidebar"] [data-baseweb="input"],
+[data-testid="stSidebar"] [data-baseweb="select"] > div:first-child {
+  background-color: #FFFFFF !important;
+  border: 1px solid #DDE2E6 !important;
+  border-radius: 3px !important;
+}
+
+[data-testid="stChatInput"] textarea,
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] [data-baseweb="select"] div,
+[data-testid="stSidebar"] [data-baseweb="select"] span {
+  color: #16202B !important;
+  -webkit-text-fill-color: #16202B !important;
+  caret-color: #16202B !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-testid="stChatInput"] textarea::placeholder,
+[data-testid="stSidebar"] input::placeholder {
+  color: #5B6B7A !important;
+  -webkit-text-fill-color: #5B6B7A !important;
+  opacity: 1 !important;
+}
+
+[data-testid="stChatInput"] svg,
+[data-testid="stSidebar"] [data-baseweb="input"] svg,
+[data-testid="stSidebar"] [data-baseweb="select"] svg {
+  fill: #5B6B7A !important;
+  color: #5B6B7A !important;
+}
+
+[data-testid="stChatInput"] button:hover svg { fill: #16202B !important; }
+
+[data-testid="stChatInput"] > div:focus-within,
+[data-testid="stSidebar"] [data-baseweb="input"]:focus-within,
+[data-testid="stSidebar"] [data-baseweb="select"] > div:first-child:focus-within {
+  border-color: #16202B !important;
+  box-shadow: 0 0 0 2px rgba(22, 32, 43, 0.12) !important;
+}
+
+/* Autocompletado de Chrome: pinta su propio fondo con sombra interna. */
+[data-testid="stSidebar"] input:-webkit-autofill {
+  -webkit-text-fill-color: #16202B !important;
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Etiquetas de los campos, sobre el gris de la barra lateral. */
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] label * {
+  color: #16202B !important;
+  font-weight: 500;
+}

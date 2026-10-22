@@ -1,0 +1,326 @@
+/* ══════════════════════════════════════════════════════════════════
+   estilo_titular.css — Revisión orientativa de tarjeta · cliente
+
+   Criterio de diseño opuesto al del gestor: aquí el lector no maneja
+   cifras todo el día. Menos densidad, más aire, una sola columna de
+   lectura y ninguna sigla sin traducir. La pantalla no debe parecer un
+   dictamen: es una orientación no vinculante y el tono lo acompaña.
+
+   Decisión deliberada: NO hay semáforo rojo. Un badge rojo grande se
+   lee como una denegación, y esta herramienta no deniega nada. La banda
+   de riesgo se comunica con texto y con un filo de color sobrio.
+
+   Paleta
+     --fondo     #FBFBFA   papel cálido muy leve
+     --texto     #1E2832   cuerpo
+     --suave     #6A7784   secundario
+     --linea     #E3E6E4   separadores
+     --banco     #1F4E5F   color institucional, único acento
+     --aviso     #9A6B2F   atención, nunca alarma
+   ══════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600&family=Source+Serif+4:opsz,wght@8..60,600&display=swap');
+
+:root {
+  --fondo:  #FBFBFA;
+  --texto:  #1E2832;
+  --suave:  #6A7784;
+  --linea:  #E3E6E4;
+  --banco:  #1F4E5F;
+  --aviso:  #9A6B2F;
+}
+
+/* ---------- Base ---------- */
+.stApp {
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: 'Source Sans 3', system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+/* Columna de lectura estrecha: el texto explicativo se lee mejor por
+   debajo de 80 caracteres por línea. */
+.block-container {
+  padding-top: 2.6rem;
+  max-width: 760px;
+}
+
+/* ---------- Cabecera ----------
+   Serif solo aquí, como firma institucional. El cuerpo sigue en sans. */
+h1 {
+  font-family: 'Source Serif 4', Georgia, serif;
+  font-size: 1.55rem !important;
+  font-weight: 600 !important;
+  color: var(--banco);
+  margin-bottom: 0.2rem !important;
+}
+
+h2, h3 {
+  font-size: 1.02rem !important;
+  font-weight: 600 !important;
+  color: var(--texto);
+}
+
+/* ---------- Barra lateral ----------
+   Para el titular no hay panel de parámetros: solo lo imprescindible y
+   el recordatorio de que puede hablar con una persona. */
+[data-testid="stSidebar"] {
+  background: #F4F5F4;
+  border-right: 1px solid var(--linea);
+}
+
+[data-testid="stSidebar"] h3 {
+  font-size: 0.8rem !important;
+  color: var(--suave);
+  border-bottom: 1px solid var(--linea);
+  padding-bottom: 0.4rem;
+}
+
+[data-testid="stSidebar"] [data-testid="stCaptionContainer"] {
+  font-size: 0.78rem;
+  color: var(--suave);
+  line-height: 1.65;
+}
+
+/* ---------- Conversación ----------
+   Burbujas con mucho espacio interior: el contenido es prosa, no datos. */
+[data-testid="stChatMessage"] {
+  background: #FFFFFF;
+  border: 1px solid var(--linea);
+  border-radius: 10px;
+  padding: 1.1rem 1.3rem;
+  margin-bottom: 0.8rem;
+  box-shadow: none;
+}
+
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+  background: #F4F5F4;
+  border-color: transparent;
+}
+
+[data-testid="stChatInput"] textarea {
+  font-family: 'Source Sans 3', sans-serif;
+  font-size: 0.97rem;
+  border-radius: 8px;
+}
+
+/* ---------- Resultado de la revisión ----------
+   Se aplica envolviendo el bloque en <div class="resultado">. El filo
+   izquierdo lleva el único color, y la banda se nombra con palabras. */
+.resultado {
+  background: #FFFFFF;
+  border: 1px solid var(--linea);
+  border-left: 4px solid var(--banco);
+  border-radius: 6px;
+  padding: 1.1rem 1.3rem;
+  margin: 1rem 0;
+}
+
+.resultado .banda {
+  font-weight: 600;
+  color: var(--banco);
+}
+
+/* Riesgo alto: ámbar, no rojo, y sin mayúsculas ni iconos de alarma.
+   La diferencia de trato es informativa, no punitiva. */
+.resultado.atencion { border-left-color: var(--aviso); }
+.resultado.atencion .banda { color: var(--aviso); }
+
+.resultado .limite {
+  font-size: 1.18rem;
+  font-weight: 600;
+  display: block;
+  margin-top: 0.3rem;
+}
+
+/* ---------- Factores que han influido ----------
+   Lista sin viñetas, sangrada, para que se lea como explicación y no
+   como diagnóstico enumerado. */
+.factores {
+  list-style: none;
+  padding-left: 0;
+  margin: 0.6rem 0 0;
+}
+
+.factores li {
+  padding: 0.3rem 0 0.3rem 0.9rem;
+  border-left: 2px solid var(--linea);
+  color: var(--suave);
+  font-size: 0.93rem;
+}
+
+/* ---------- Descargo de responsabilidad ----------
+   Visible pero sin estridencia: la herramienta no es vinculante y eso
+   debe quedar claro sin convertirlo en letra pequeña ilegible. */
+.descargo {
+  font-size: 0.84rem;
+  color: var(--suave);
+  border-top: 1px solid var(--linea);
+  padding-top: 0.7rem;
+  margin-top: 1.1rem;
+}
+
+/* ---------- Botones ---------- */
+.stButton > button {
+  background: var(--banco);
+  color: #FFFFFF;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.93rem;
+  font-weight: 600;
+  padding: 0.5rem 1.1rem;
+}
+
+.stButton > button:hover { background: #17404F; color: #FFFFFF; }
+
+.stButton > button:focus-visible {
+  outline: 2px solid var(--texto);
+  outline-offset: 2px;
+}
+
+/* ---------- Limpieza de cromo de Streamlit ---------- */
+#MainMenu, footer, [data-testid="stDecoration"] { visibility: hidden; }
+[data-testid="stHeader"] { background: transparent; }
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONVERSACIÓN ALINEADA
+   Quien pregunta a la IZQUIERDA, el asistente a la DERECHA. Streamlit
+   apila los mensajes a ancho completo: se recorta el ancho y se empuja
+   con margen automático al lado que corresponde.
+   ══════════════════════════════════════════════════════════════════ */
+[data-testid="stChatMessage"] {
+  width: fit-content;
+  max-width: 84%%;
+  margin-bottom: 0.6rem;
+}
+
+/* Quien pregunta: filo de acento y esquina inferior izquierda marcada. */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarUser"]) {
+  margin-right: auto;
+  border-radius: 14px 14px 14px 4px;
+  border-left: 3px solid #1F4E5F;
+  background: #F4F5F4;
+}
+
+/* Asistente: a la derecha, con el avatar al otro lado del bloque. */
+[data-testid="stChatMessage"]:has([data-testid="stChatMessageAvatarAssistant"]) {
+  margin-left: auto;
+  flex-direction: row-reverse;
+  border-radius: 14px 14px 4px 14px;
+  border-right: 3px solid #9A6B2F;
+  border-left: 1px solid #E3E6E4;
+  background: #FFFFFF;
+}
+
+/* Un mensaje con tabla necesita todo el ancho: comprimir las columnas
+   de importes las hace ilegibles. */
+[data-testid="stChatMessage"]:has(table) { max-width: 100%; width: 100%; }
+
+/* Avatares de persona y asistente.
+   El icono de Streamlit viene en blanco, asi que en lugar de forzar su
+   color se pinta el circulo: el glifo blanco contrasta sobre el relleno
+   y la solucion no depende de que el selector del svg acierte. */
+[data-testid="stChatMessageAvatarUser"],
+[data-testid="stChatMessageAvatarAssistant"] {
+  width: 30px;
+  height: 30px;
+  flex-shrink: 0;
+  border: none !important;
+}
+
+[data-testid="stChatMessageAvatarUser"] {
+  background: #1F4E5F !important;
+}
+
+[data-testid="stChatMessageAvatarAssistant"] {
+  background: #9A6B2F !important;
+}
+
+/* Por si alguna version pinta el glifo oscuro, se fuerza a blanco. */
+[data-testid="stChatMessageAvatarUser"] svg,
+[data-testid="stChatMessageAvatarUser"] svg path,
+[data-testid="stChatMessageAvatarAssistant"] svg,
+[data-testid="stChatMessageAvatarAssistant"] svg path {
+  fill: #FFFFFF !important;
+  color: #FFFFFF !important;
+}
+
+
+/* ══════════════════════════════════════════════════════════════════
+   CAMPOS DE ENTRADA
+   Sobre fondo claro lo natural es tinta oscura. Se anula el fondo de
+   todo lo que hay dentro del campo y se pinta solo el envoltorio, que
+   es lo que funciona con independencia de la version de Streamlit.
+   ══════════════════════════════════════════════════════════════════ */
+[data-testid="stChatInput"],
+[data-testid="stChatInput"] *,
+[data-testid="stSidebar"] [data-baseweb="input"],
+[data-testid="stSidebar"] [data-baseweb="input"] *,
+[data-testid="stSidebar"] [data-baseweb="base-input"],
+[data-testid="stSidebar"] [data-baseweb="base-input"] *,
+[data-testid="stSidebar"] [data-baseweb="select"],
+[data-testid="stSidebar"] [data-baseweb="select"] * {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+[data-testid="stChatInput"] > div,
+[data-testid="stSidebar"] [data-baseweb="input"],
+[data-testid="stSidebar"] [data-baseweb="select"] > div:first-child {
+  background-color: #FFFFFF !important;
+  border: 1px solid #E3E6E4 !important;
+  border-radius: 8px !important;
+}
+
+[data-testid="stChatInput"] textarea,
+[data-testid="stSidebar"] input,
+[data-testid="stSidebar"] [data-baseweb="select"] div,
+[data-testid="stSidebar"] [data-baseweb="select"] span {
+  color: #1E2832 !important;
+  -webkit-text-fill-color: #1E2832 !important;
+  caret-color: #1F4E5F !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+[data-testid="stChatInput"] textarea::placeholder,
+[data-testid="stSidebar"] input::placeholder {
+  color: #6A7784 !important;
+  -webkit-text-fill-color: #6A7784 !important;
+  opacity: 1 !important;
+}
+
+[data-testid="stChatInput"] svg,
+[data-testid="stSidebar"] [data-baseweb="input"] svg,
+[data-testid="stSidebar"] [data-baseweb="select"] svg {
+  fill: #6A7784 !important;
+  color: #6A7784 !important;
+}
+
+[data-testid="stChatInput"] button:hover svg { fill: #1F4E5F !important; }
+
+[data-testid="stChatInput"] > div:focus-within,
+[data-testid="stSidebar"] [data-baseweb="input"]:focus-within,
+[data-testid="stSidebar"] [data-baseweb="select"] > div:first-child:focus-within {
+  border-color: #1F4E5F !important;
+  box-shadow: 0 0 0 2px rgba(31, 78, 95, 0.14) !important;
+}
+
+/* Autocompletado de Chrome: pinta su propio fondo con sombra interna. */
+[data-testid="stSidebar"] input:-webkit-autofill {
+  -webkit-text-fill-color: #1E2832 !important;
+  -webkit-box-shadow: 0 0 0 1000px #FFFFFF inset !important;
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+/* Etiquetas de los campos, sobre el gris de la barra lateral. */
+[data-testid="stSidebar"] label,
+[data-testid="stSidebar"] label * {
+  color: #1E2832 !important;
+  font-weight: 500;
+}
